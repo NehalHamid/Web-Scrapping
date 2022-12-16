@@ -19,7 +19,7 @@ for page in pages:
     soup=BeautifulSoup(page.content,'html.parser')
     Book_title = soup.find_all('h3')
     for i in range(len(Book_title)):
-        Book_titles.append(Book_title[i].find('a').attrs['title'])
+    #    Book_titles.append(Book_title[i].find('a').attrs['title'])
         Links.append(Book_title[i].find('a').attrs['href'])
 
 for link in Links:
@@ -29,14 +29,19 @@ for link in Links:
     price=soup.find('p',{'class':'price_color'})
     In_stock=soup.find('p',{'class':'instock availability'})
     Product_discription=soup.find('p')
-for In_Stock in In_stock:
-    In_stocks.append(In_Stock.text)
+    try:
+        for i in In_stock:
+            In_stocks.append(In_stock[i].text)
+    except KeyError:
+        continue
 
-#print(In_stocks)
+
+print(In_stocks)
+
 
 #file_list ={Book_titles}
-data=pd.DataFrame(Book_titles,In_stocks)
-data.to_excel('python_Project.xlsx',index=False)
+#data=pd.DataFrame(Book_titles,In_stocks)
+#data.to_excel('python_Project.xlsx',index=False)
 
 
 #ported =zip_longest(*file_list)
