@@ -1,10 +1,9 @@
 import csv
-
 import np as np
 import requests
 from bs4 import BeautifulSoup
 import pandas as pd
-from openpyxl.workbook import Workbook
+from openpyxl import Workbook,load_workbook
 from itertools import zip_longest
 
 #url=requests.get('https://books.toscrape.com/')
@@ -33,6 +32,17 @@ for link in Links:
     Prices.append(price.text.replace('£',''))
     In_stocks.append(In_stock.text.strip())
 
+wb = load_workbook("D:/THIRD YEAR/books/python_Project.xlsx")
+sh= wb['Sheet']
+sh.append(['Book title','Prices','In stock'])
+sh.save("D:/THIRD YEAR/books/python_Project.xlsx")
+
+for i in range(1000):
+    sh.append([Book_titles(i),Prices(i),In_stocks(i)])
+sh.save("D:/THIRD YEAR/books/python_Project.xlsx")
+
+
+'''
 stored_result=[]
 for i in range(1000):
     temporary={
@@ -43,7 +53,7 @@ for i in range(1000):
 
 data=pd.DataFrame(Book_titles,Prices,In_stocks)
 data.to_excel('python_Project.xlsx',index=False)
-
+'''
 #file_list ={Book_titles,Prices,In_stocks}
 #exported =zip_longest(*file_list)
 
