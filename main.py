@@ -1,3 +1,5 @@
+import csv
+
 import np as np
 import requests
 from bs4 import BeautifulSoup
@@ -10,7 +12,6 @@ from itertools import zip_longest
 Book_titles=[]
 Prices=[]
 In_stocks=[]
-Product_discriptions=[]
 Links=[]
 
 pages = np.arange(1,51)
@@ -19,8 +20,9 @@ for page in pages:
     soup=BeautifulSoup(page.content,'html.parser')
     Book_title = soup.find_all('h3')
     for i in range(len(Book_title)):
-    #    Book_titles.append(Book_title[i].find('a').attrs['title'])
+        Book_titles.append(Book_title[i].find('a').attrs['title'])
         Links.append(Book_title[i].find('a').attrs['href'])
+
 
 for link in Links:
     url='https://books.toscrape.com/catalogue/'+link
@@ -28,25 +30,24 @@ for link in Links:
     soup=BeautifulSoup(page.content,'html.parser')
     price=soup.find('p',{'class':'price_color'})
     In_stock=soup.find('p',{'class':'instock availability'})
-    Product_discription=soup.find('p')
-    try:
-        for i in In_stock:
-            In_stocks.append(In_stock[i].text)
-    except KeyError:
-        continue
+    Prices.append(price.text.replace('£',''))
+    In_stocks.append(In_stock.text.strip())
 
+stored_result=[]
+for i in range(1000):
+    temporary={
+        "Book title": Book_titles[i],
+        "Price": Prices[i],
+        "In stock": In_stocks[i] }
+    stored_result.append(temporary)
 
-print(In_stocks)
+data=pd.DataFrame(Book_titles,Prices,In_stocks)
+data.to_excel('python_Project.xlsx',index=False)
 
+#file_list ={Book_titles,Prices,In_stocks}
+#exported =zip_longest(*file_list)
 
-#file_list ={Book_titles}
-#data=pd.DataFrame(Book_titles,In_stocks)
-#data.to_excel('python_Project.xlsx',index=False)
-
-
-#ported =zip_longest(*file_list)
-
-#with open("D:/THIRD YEAR/books/projects.csv","w") as myfile:
+#with open("D:/THIRD YEAR/books/project.csv","w") as myfile:
 #    wr = csv.writer(myfile)
 #    wr.writerow(["Book_titles","Book_prices","In_stock","Product_descriptions"])
 #    wr.writerows(exported)
