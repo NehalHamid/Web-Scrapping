@@ -35,7 +35,7 @@ for link in Links:
 wb = load_workbook("D:/THIRD YEAR/books/python_Project.xlsx")
 sh= wb['Sheet']
 sh.append(['Book title','Prices','In stock'])
-sh.save("D:/THIRD YEAR/books/python_Project.xlsx")
+sh.save("C:/Users/c.delivery for lap/PycharmProjects/WebScrapingProject/python_Project.xlsx")
 
 for i in range(1000):
     sh.append([Book_titles(i),Prices(i),In_stocks(i)])
